@@ -1,0 +1,35 @@
+{
+   "common": {
+      "back": "Indietro"
+   },
+   "common_info": {},
+   "common_error": {
+      "generic": "Qualcosa è andato storto",
+      "404": "Pagina non trovata",
+      "500": "Errore interno del server",
+      "410": "Il link è scaduto o non è valido"
+   },
+   "api_error": {
+      "generic": "Si è verificato un errore"
+   },
+   "component": {},
+   "screen": {
+      "layout": {
+         "default": {
+            "meta": {
+               "title": "template-nuxt",
+               "description": "template-nuxt"
+            }
+         }
+      },
+      "index": {
+         "home": {
+            "meta": {
+               "title": "",
+               "description": ""
+            }
+         }
+      }
+   },
+   "contacts": {}
+}

@@ -1,0 +1,55 @@
+html {
+   @apply scroll-smooth font-sans;
+}
+
+.__title-hightlight {
+   @apply text-2xl font-bold text-sunset-strip;
+}
+
+.__title-background {
+   @apply text-2xl font-bold bg-sunset-strip text-white;
+}
+
+.__backdrop {
+   @apply !pointer-events-auto bg-black/40 backdrop-blur-sm;
+}
+
+.__clickable {
+   @apply cursor-pointer select-none transition-opacity duration-200;
+
+   &:active {
+      @apply transition-none;
+
+      opacity: 0.6 !important;
+   }
+}
+
+.__link {
+   @apply cursor-pointer underline transition-opacity duration-200;
+
+   &:active {
+      @apply transition-none;
+
+      opacity: 0.6 !important;
+   }
+}
+
+.__glass {
+   backdrop-filter: blur(20px);
+}
+
+.__shadow {
+   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
+}
+
+.__center {
+   width: min(1452px, 100% - 4rem);
+   margin-inline: auto;
+}
+
+@media only screen and (max-width: 980px) {
+   .__center {
+      width: min(1452px, 100% - 2rem);
+      margin-inline: auto;
+   }
+}

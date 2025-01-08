@@ -1,0 +1,35 @@
+{
+   "common": {
+      "back": "Back"
+   },
+   "common_info": {},
+   "common_error": {
+      "generic": "Something went wrong",
+      "404": "Page not found",
+      "500": "Internal server error",
+      "410": "The link has expired or is invalid"
+   },
+   "api_error": {
+      "generic": "An error occurred"
+   },
+   "component": {},
+   "screen": {
+      "layout": {
+         "default": {
+            "meta": {
+               "title": "template-nuxt",
+               "description": "template-nuxt"
+            }
+         }
+      },
+      "index": {
+         "home": {
+            "meta": {
+               "title": "",
+               "description": ""
+            }
+         }
+      }
+   },
+   "contacts": {}
+}

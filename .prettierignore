@@ -1,0 +1,7 @@
+.nuxt
+
+supabase/.temp
+supabase/.branches
+supabase/seed/sql/*.sql
+supabase/functions/_shared/translations.ts
+supabase/migrations
