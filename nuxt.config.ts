@@ -25,9 +25,11 @@ export default defineNuxtConfig({
       fallbackTitle: false,
    },
 
+   ssr: false,
+
    site: {
-      url: 'template-nuxt',
-      name: 'template-nuxt',
+      url: 'streamy.xleddyl.dev',
+      name: 'Streamy',
    },
 
    // sitemap: {
@@ -58,7 +60,7 @@ export default defineNuxtConfig({
             },
             {
                rel: 'stylesheet',
-               href: 'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap',
+               href: 'https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap',
             },
          ],
          noscript: [{ children: 'Javascript is required' }],

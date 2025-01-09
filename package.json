@@ -1,9 +1,9 @@
 {
-   "name": "template-nuxt",
+   "name": "streamy-web",
    "version": "1.0.0",
    "private": true,
    "author": "xleddyl <edoalberti99@gmail.com>",
-   "repository": "git@github.com:xleddyl/template-nuxt.git",
+   "repository": "git@github.com:xleddyl/streamy-web.git",
    "license": "MIT",
    "scripts": {
       "_env": "dotenv -e ./.env -c --",
@@ -42,6 +42,7 @@
       "motion": "^11.15.0",
       "nuxt": "3.12.2",
       "nuxt-zod-i18n": "latest",
+      "peerjs": "^1.5.4",
       "pinia": "^2.1.7",
       "three": "^0.172.0",
       "vue": "^3.4.21",

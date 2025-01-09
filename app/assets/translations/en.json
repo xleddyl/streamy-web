@@ -1,11 +1,15 @@
 {
    "common": {
-      "back": "Back"
+      "back": "Back",
+      "home": "Homepage",
+      "create_room": "Create room",
+      "rejoin_room": "Rejoin room"
    },
    "common_info": {},
    "common_error": {
       "generic": "Something went wrong",
-      "404": "Page not found",
+      "404": "Verify the room code",
+      "404_description": "Check that you have entered the correct room code in the URL",
       "500": "Internal server error",
       "410": "The link has expired or is invalid"
    },
@@ -17,8 +21,8 @@
       "layout": {
          "default": {
             "meta": {
-               "title": "template-nuxt",
-               "description": "template-nuxt"
+               "title": "Streamy",
+               "description": "Watch Youtube with your friends!"
             }
          }
       },

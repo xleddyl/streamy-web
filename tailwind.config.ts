@@ -37,6 +37,10 @@ export default {
                900: '#545454',
                950: '#363636',
             },
+            //
+            'candy-apple-red': {
+               DEFAULT: '#FF0808',
+            },
          },
          borderRadius: {
             small: '10px',
@@ -44,7 +48,7 @@ export default {
             large: '30px',
          },
          fontFamily: {
-            title: ['Unbounded', 'sans-serif'],
+            title: ['Lexend', 'sans-serif'],
             sans: ['Montserrat', 'sans-serif'],
          },
       },

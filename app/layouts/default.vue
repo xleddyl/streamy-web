@@ -1,18 +1,16 @@
 <template>
-   <Html class="bg-black/90">
+   <Html class="bg-neutral-900">
       <Body>
          <div id="app-layout">
-            <NuxtLoadingIndicator :height="5" color="#FFBD00" />
+            <NuxtLoadingIndicator :height="5" color="#FF0808" />
             <UNotifications />
             <UModals />
-            <Analytics/>
+            <Analytics />
 
-            <div class="relative flex min-h-screen flex-col items-center justify-center px-5 py-10">
+            <div class="flex min-h-screen flex-col justify-between">
                <Header />
-               <div id="content">
-                  <slot />
-               </div>
-               <Footer class="absolute bottom-5" />
+               <slot />
+               <Footer />
             </div>
          </div>
       </Body>
@@ -20,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Analytics } from '@vercel/analytics/nuxt';
+import { Analytics } from '@vercel/analytics/nuxt'
 
 const { t } = useI18n()
 
