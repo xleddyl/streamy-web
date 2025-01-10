@@ -169,7 +169,12 @@ export default defineNuxtPlugin(() => {
             break
          }
          case 'video': {
-            const regex = /[?&]v=([^&]+)/
+            // Handle all YouTube URL formats:
+            // 1. https://youtu.be/d2uyH6cMNb4?si=frc3ZfBW8ou1BNRj
+            // 2. https://www.youtube.com/watch?v=8oI7Lp4SJbs&t=7028s
+            // 3. https://m.youtube.com/watch?si=frc3ZfBW8ou1BNRj&v=d2uyH6cMNb4
+
+            const regex = /(?:youtu\.be\/|[?&]v=)([^?&]+)/
             const match = data.url.match(regex)
             video.value.id = match?.[1] || ''
             video.value.currentTime = 0
