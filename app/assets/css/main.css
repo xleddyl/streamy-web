@@ -3,11 +3,11 @@ html {
 }
 
 .__title-hightlight {
-   @apply text-2xl font-bold text-sunset-strip;
+   @apply text-2xl font-bold text-candy-apple-red;
 }
 
 .__title-background {
-   @apply text-2xl font-bold bg-sunset-strip text-white;
+   @apply bg-candy-apple-red text-2xl font-bold text-white;
 }
 
 .__backdrop {

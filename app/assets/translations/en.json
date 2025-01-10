@@ -3,9 +3,13 @@
       "back": "Back",
       "home": "Homepage",
       "create_room": "Create room",
-      "rejoin_room": "Rejoin room"
+      "share_room": "Share",
+      "play": "Play"
    },
-   "common_info": {},
+   "common_info": {
+      "share_title": "Link copied to clipboard!",
+      "share_description": "It's time to share it with your friends!"
+   },
    "common_error": {
       "generic": "Something went wrong",
       "404": "Verify the room code",
@@ -22,16 +26,17 @@
          "default": {
             "meta": {
                "title": "Streamy",
-               "description": "Watch Youtube with your friends!"
+               "description": "P2P youtube watchparty!"
             }
          }
       },
       "index": {
          "home": {
             "meta": {
-               "title": "",
-               "description": ""
-            }
+               "title": "Streamy",
+               "description": "P2P youtube watchparty!"
+            },
+            "add_link_placeholder": "youtube link"
          }
       }
    },

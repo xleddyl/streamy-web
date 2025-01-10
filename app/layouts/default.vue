@@ -1,5 +1,5 @@
 <template>
-   <Html class="bg-neutral-900">
+   <Html class="bg-smoky-black">
       <Body>
          <div id="app-layout">
             <NuxtLoadingIndicator :height="5" color="#FF0808" />
@@ -7,10 +7,12 @@
             <UModals />
             <Analytics />
 
-            <div class="flex min-h-screen flex-col justify-between">
+            <div class="flex min-h-screen flex-col">
                <Header />
                <slot />
-               <Footer />
+               <div class="mt-auto">
+                  <Footer />
+               </div>
             </div>
          </div>
       </Body>

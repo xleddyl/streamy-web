@@ -1,3 +1,3 @@
 # Streamy
 
-Watch Youtube with your friends!
+P2P youtube watchparty!

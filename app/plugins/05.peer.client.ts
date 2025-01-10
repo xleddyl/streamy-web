@@ -4,16 +4,35 @@ import type { DataConnection } from 'peerjs'
 
 type ConnectionMap = Map<string, DataConnection>
 
-type Message = {
-   type: 'seek' | 'play' | 'pause' | 'video'
-   data: any
-}
+type Message =
+   | {
+        type: 'seek'
+        timestamp: number
+     }
+   | {
+        type: 'play'
+        timestamp: number
+     }
+   | {
+        type: 'pause'
+        timestamp: number
+     }
+   | {
+        type: 'video'
+        url: string
+     }
+   | {
+        type: 'rate'
+        rate: number
+     }
 
 export type VideoState = {
    id: string
    currentTime: number
    isPlaying: boolean
    lastCommand: Message['type']
+   isReconnection: boolean
+   rate: number
 }
 
 export default defineNuxtPlugin(() => {
@@ -28,6 +47,8 @@ export default defineNuxtPlugin(() => {
       currentTime: 0,
       isPlaying: false,
       lastCommand: 'video',
+      isReconnection: false,
+      rate: 1,
    }))
 
    const create = () => {
@@ -88,12 +109,15 @@ export default defineNuxtPlugin(() => {
       connection?.on('open', () => {
          connections.value.set(connection.peer, connection)
          if (isHost.value) {
-            connection.send(video.value)
+            connection.send({ ...video.value, isReconnection: true })
          }
       })
 
       connection?.on('data', (data: unknown) => {
          video.value = data as VideoState
+         if (isHost.value) {
+            propagateVideo(video.value)
+         }
       })
 
       connection?.on('close', () => {
@@ -114,29 +138,43 @@ export default defineNuxtPlugin(() => {
       connection?.send(video.value)
    }
 
+   const propagateVideo = (video: VideoState) => {
+      connections.value.forEach((connection) => {
+         connection.send(video)
+      })
+      return
+   }
+
    const transformMessage = (data: Message) => {
       video.value.lastCommand = data.type
+      video.value.isReconnection = false
 
       switch (data.type) {
          case 'seek': {
-            video.value.currentTime = data.data
+            video.value.currentTime = data.timestamp
             break
          }
          case 'play': {
             video.value.isPlaying = true
-            video.value.currentTime = data.data
+            video.value.currentTime = data.timestamp
             break
          }
          case 'pause': {
             video.value.isPlaying = false
-            video.value.currentTime = data.data
+            video.value.currentTime = data.timestamp
+            break
+         }
+         case 'rate': {
+            video.value.rate = data.rate
             break
          }
          case 'video': {
             const regex = /[?&]v=([^&]+)/
-            const match = data.data.match(regex)
+            const match = data.url.match(regex)
             video.value.id = match?.[1] || ''
             video.value.currentTime = 0
+            video.value.rate = 1
+            video.value.isPlaying = true
             break
          }
       }

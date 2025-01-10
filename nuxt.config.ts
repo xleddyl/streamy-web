@@ -159,7 +159,7 @@ export default defineNuxtConfig({
    ],
 
    ui: {
-      safelistColors: ['sunset-strip', 'philippine-silver'],
+      safelistColors: ['candy-apple-red', 'philippine-silver'],
    },
 
    // supabase: {

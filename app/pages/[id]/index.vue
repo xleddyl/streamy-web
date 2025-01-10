@@ -1,35 +1,17 @@
 <template>
-   <main class="__center flex items-center justify-center">
-      <div class="flex flex-col gap-2">
-         <KeepAlive>
-            <YoutubeIframe
-               :videoState="peer.data.video.value"
-               @seek="
-                  (t) =>
-                     peer.sendMessage({
-                        type: 'seek',
-                        data: t,
-                     })
-               "
-               @play="
-                  (t) =>
-                     peer.sendMessage({
-                        type: 'play',
-                        data: t,
-                     })
-               "
-               @pause="
-                  (t) =>
-                     peer.sendMessage({
-                        type: 'pause',
-                        data: t,
-                     })
-               "
-            />
-         </KeepAlive>
-         <input type="text" class="rounded-2xl border-2" v-model="video" />
-         <Button @click="handleSendMessage">set video</Button>
-      </div>
+   <main class="__center flex flex-col gap-2 md:gap-4">
+      <TextInput
+         v-model="url"
+         @submit="handleNewUrl"
+         :placeholder="$t('screen.index.home.add_link_placeholder')"
+         :buttonText="$t('common.play')"
+      />
+      <Player
+         :videoState="peer.data.video.value"
+         @seek="handleSeek"
+         @play-pause="handlePlayPause"
+         @rate="handleRate"
+      />
    </main>
 </template>
 
@@ -37,12 +19,34 @@
 const route = useRoute()
 const peer = usePeer()
 
-const video = ref<string>('')
+const url = ref<string>('')
 
-const handleSendMessage = () => {
+const handleNewUrl = () => {
    peer.sendMessage({
       type: 'video',
-      data: video.value,
+      url: url.value,
+   })
+   url.value = ''
+}
+
+const handlePlayPause = (t: number, type: 'play' | 'pause') => {
+   peer.sendMessage({
+      type,
+      timestamp: t,
+   })
+}
+
+const handleRate = (rate: number) => {
+   peer.sendMessage({
+      type: 'rate',
+      rate,
+   })
+}
+
+const handleSeek = (t: number) => {
+   peer.sendMessage({
+      type: 'seek',
+      timestamp: t,
    })
 }
 
