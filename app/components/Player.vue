@@ -1,7 +1,8 @@
 <template>
    <div class="flex w-full flex-col gap-3">
       <div class="h-[30rem] select-none overflow-hidden rounded-3xl md:h-[40rem]">
-         <div class="size-full">
+         <div class="relative size-full">
+            <div v-if="!currentVideoId" class="absolute inset-0 z-10 bg-charleston-green" />
             <div class="size-full" id="player" />
          </div>
       </div>
