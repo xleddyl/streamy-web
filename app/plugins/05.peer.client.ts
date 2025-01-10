@@ -3,53 +3,74 @@ import { Peer } from 'peerjs'
 import type { DataConnection } from 'peerjs'
 
 type ConnectionMap = Map<string, DataConnection>
-
+type Commands = 'seek' | 'play' | 'pause' | 'video' | 'rate' | 'add' | 'next' | 'prev'
 type Message =
    | {
-        type: 'seek'
-        timestamp: number
+        type: 'player'
+        command:
+           | {
+                type: 'seek'
+                timestamp: number
+             }
+           | {
+                type: 'play'
+                timestamp: number
+             }
+           | {
+                type: 'pause'
+                timestamp: number
+             }
+           | {
+                type: 'rate'
+                rate: number
+             }
      }
    | {
-        type: 'play'
-        timestamp: number
-     }
-   | {
-        type: 'pause'
-        timestamp: number
-     }
-   | {
-        type: 'video'
-        url: string
-     }
-   | {
-        type: 'rate'
-        rate: number
+        type: 'queue'
+        command:
+           | {
+                type: 'add'
+                url: string
+             }
+           | {
+                type: 'next'
+             }
+           | {
+                type: 'prev'
+             }
      }
 
 export type VideoState = {
-   id: string
    currentTime: number
    isPlaying: boolean
-   lastCommand: Message['type']
+   lastCommand: Commands
    isReconnection: boolean
    rate: number
+
+   queueIdx: number
+   queue: string[]
+}
+
+const DEFAULT_VIDEO_STATE: VideoState = {
+   currentTime: 0,
+   isPlaying: false,
+   lastCommand: 'add',
+   isReconnection: false,
+   rate: 1,
+
+   queueIdx: -1,
+   queue: [],
 }
 
 export default defineNuxtPlugin(() => {
    const peerInstance = useState<Peer | undefined>('peer-instance', () => undefined)
-
-   const isHost = useState<boolean>('peer-is-host', () => false)
-   const roomId = useState<string>('peer-room-id', () => '')
-   const connections = useState<ConnectionMap>('peer-room-connections', () => new Map())
-   const selfId = useState<string>('peer-self-id', () => '')
-   const video = useState<VideoState>('peer-room-video', () => ({
-      id: '',
-      currentTime: 0,
-      isPlaying: false,
-      lastCommand: 'video',
-      isReconnection: false,
-      rate: 1,
-   }))
+   const connections = useState<ConnectionMap>('connections', () => new Map())
+   const isHost = useState<boolean>('is-host', () => false)
+   const videoState = useState<VideoState>('video-state', () => DEFAULT_VIDEO_STATE)
+   const connectionStatus = useState<'connected' | 'not-connected'>(
+      'connection-status',
+      () => 'not-connected'
+   )
 
    const create = () => {
       destroy()
@@ -70,8 +91,8 @@ export default defineNuxtPlugin(() => {
       }
 
       isHost.value = false
-      roomId.value = ''
-      selfId.value = ''
+      connectionStatus.value = 'not-connected'
+      videoState.value = DEFAULT_VIDEO_STATE
    }
 
    const createRoom = () => {
@@ -79,13 +100,10 @@ export default defineNuxtPlugin(() => {
 
       peer.value?.on('open', (id: string) => {
          isHost.value = true
-         roomId.value = id
-         selfId.value = id
-
+         connectionStatus.value = 'connected'
          peer.value?.on('connection', (connection: DataConnection) => {
             handleConnection(connection)
          })
-
          navigateTo(`/${id}`)
       })
    }
@@ -95,50 +113,49 @@ export default defineNuxtPlugin(() => {
 
       peer.value?.on('open', (id: string) => {
          isHost.value = false
-         roomId.value = hostId
-         selfId.value = id
          const connection = peer.value?.connect(hostId, {
             reliable: true,
          })
-
          handleConnection(connection)
       })
    }
 
    const handleConnection = (connection: DataConnection | undefined) => {
       connection?.on('open', () => {
-         connections.value.set(connection.peer, connection)
          if (isHost.value) {
-            connection.send({ ...video.value, isReconnection: true })
+            connection.send({ ...videoState.value, isReconnection: true })
          }
+         connectionStatus.value = 'connected'
+         connections.value.set(connection.peer, connection)
       })
 
       connection?.on('data', (data: unknown) => {
-         video.value = data as VideoState
+         videoState.value = data as VideoState
          if (isHost.value) {
-            propagateVideo(video.value)
+            propagateData(videoState.value)
          }
       })
 
       connection?.on('close', () => {
+         connectionStatus.value = 'not-connected'
          connections.value.delete(connection.peer)
       })
    }
 
    const sendMessage = (message: Message) => {
-      video.value = transformMessage(message)
+      videoState.value = transformMessage(message)
       if (isHost.value) {
          connections.value.forEach((connection) => {
-            connection.send(video.value)
+            connection.send(videoState.value)
          })
          return
       }
 
       const connection = connections.value.values().next().value
-      connection?.send(video.value)
+      connection?.send(videoState.value)
    }
 
-   const propagateVideo = (video: VideoState) => {
+   const propagateData = (video: VideoState) => {
       connections.value.forEach((connection) => {
          connection.send(video)
       })
@@ -146,45 +163,70 @@ export default defineNuxtPlugin(() => {
    }
 
    const transformMessage = (data: Message) => {
-      video.value.lastCommand = data.type
-      video.value.isReconnection = false
+      videoState.value.lastCommand = data.command.type
+      videoState.value.isReconnection = false
 
       switch (data.type) {
-         case 'seek': {
-            video.value.currentTime = data.timestamp
+         case 'player': {
+            switch (data.command.type) {
+               case 'seek': {
+                  videoState.value.currentTime = data.command.timestamp
+                  break
+               }
+               case 'play': {
+                  videoState.value.isPlaying = true
+                  videoState.value.currentTime = data.command.timestamp
+                  break
+               }
+               case 'pause': {
+                  videoState.value.isPlaying = false
+                  videoState.value.currentTime = data.command.timestamp
+                  break
+               }
+               case 'rate': {
+                  videoState.value.rate = data.command.rate
+                  break
+               }
+            }
             break
          }
-         case 'play': {
-            video.value.isPlaying = true
-            video.value.currentTime = data.timestamp
-            break
-         }
-         case 'pause': {
-            video.value.isPlaying = false
-            video.value.currentTime = data.timestamp
-            break
-         }
-         case 'rate': {
-            video.value.rate = data.rate
-            break
-         }
-         case 'video': {
-            // Handle all YouTube URL formats:
-            // 1. https://youtu.be/d2uyH6cMNb4?si=frc3ZfBW8ou1BNRj
-            // 2. https://www.youtube.com/watch?v=8oI7Lp4SJbs&t=7028s
-            // 3. https://m.youtube.com/watch?si=frc3ZfBW8ou1BNRj&v=d2uyH6cMNb4
+         case 'queue': {
+            switch (data.command.type) {
+               case 'add': {
+                  const regex = /(?:youtu\.be\/|[?&]v=)([^?&]+)/
+                  const id = data.command.url.match(regex)?.[1] || ''
+                  videoState.value.queue.push(id)
 
-            const regex = /(?:youtu\.be\/|[?&]v=)([^?&]+)/
-            const match = data.url.match(regex)
-            video.value.id = match?.[1] || ''
-            video.value.currentTime = 0
-            video.value.rate = 1
-            video.value.isPlaying = true
-            break
+                  if (videoState.value.queueIdx === -1) {
+                     videoState.value.queueIdx = 0
+                  }
+                  break
+               }
+               case 'next': {
+                  if (videoState.value.queueIdx >= videoState.value.queue.length - 1) {
+                     videoState.value.queueIdx = 0
+                  } else {
+                     videoState.value.queueIdx += 1
+                  }
+                  videoState.value.currentTime = 0
+                  videoState.value.rate = 1
+                  break
+               }
+               case 'prev': {
+                  if (videoState.value.queueIdx <= 0) {
+                     videoState.value.queueIdx = videoState.value.queue.length - 1
+                  } else {
+                     videoState.value.queueIdx -= 1
+                  }
+                  videoState.value.currentTime = 0
+                  videoState.value.rate = 1
+                  break
+               }
+            }
          }
       }
 
-      return video.value
+      return videoState.value
    }
 
    return {
@@ -195,10 +237,9 @@ export default defineNuxtPlugin(() => {
             sendMessage,
             data: {
                isHost,
-               roomId,
                connections,
-               selfId,
-               video,
+               videoState,
+               connectionStatus,
             },
          },
       },

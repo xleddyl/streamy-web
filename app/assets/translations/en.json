@@ -4,7 +4,8 @@
       "home": "Homepage",
       "create_room": "Create room",
       "share_room": "Share",
-      "play": "Play"
+      "play": "Play",
+      "add_queue": "Add to queue"
    },
    "common_info": {
       "share_title": "Link copied to clipboard!",
@@ -20,7 +21,13 @@
    "api_error": {
       "generic": "An error occurred"
    },
-   "component": {},
+   "component": {
+      "header": {
+         "connected": "Connected",
+         "not_connected": "Not connected",
+         "host": "Host"
+      }
+   },
    "screen": {
       "layout": {
          "default": {
@@ -36,7 +43,8 @@
                "title": "Streamy",
                "description": "P2P youtube watchparty!"
             },
-            "add_link_placeholder": "youtube link"
+            "add_link_placeholder": "youtube link",
+            "queued_videos": "video %{index} of %{count}"
          }
       }
    },
