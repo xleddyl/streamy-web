@@ -32,10 +32,10 @@ export default defineNuxtConfig({
       name: 'Streamy',
    },
 
-   // sitemap: {
-   //    cacheMaxAgeSeconds: 86400, // 24 hour
-   //    sources: ['/api/__sitemap__/urls/locations', '/api/__sitemap__/urls/products'],
-   // },
+   sitemap: {
+      cacheMaxAgeSeconds: 86400, // 24 hour
+      sources: ['/api/__sitemap__/urls/locations', '/api/__sitemap__/urls/products'],
+   },
 
    dayjs: {
       locales: ['it', 'en'],
