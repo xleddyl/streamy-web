@@ -4,12 +4,14 @@ export type SearchResult = {
 }
 
 export const scrapeLink = async (url: string) => {
-   const proxyUrl = `https://streamy.xleddyl.dev/api/proxy?url=${encodeURIComponent(url)}`
-
+   const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`
+   console.log(proxyUrl)
    try {
       const response = await fetch(proxyUrl)
+      console.log(response)
+
       const html = await response.text()
-      console.log(html, response)
+
       const parser = new DOMParser()
       const doc = parser.parseFromString(html, 'text/html')
 
@@ -21,6 +23,7 @@ export const scrapeLink = async (url: string) => {
          thumbnail,
       }
    } catch (error) {
+      console.log('noooo')
       console.error('Error fetching video info:', error)
       return
    }
