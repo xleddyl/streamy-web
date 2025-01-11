@@ -9,7 +9,7 @@ export const scrapeLink = async (url: string) => {
    try {
       const response = await fetch(proxyUrl)
       const html = await response.text()
-
+      console.log(html, response)
       const parser = new DOMParser()
       const doc = parser.parseFromString(html, 'text/html')
 

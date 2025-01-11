@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
 
    try {
       const response = await $fetch(targetUrl)
-
       return response
    } catch (error) {
       return createError({
