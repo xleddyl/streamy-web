@@ -31,8 +31,6 @@
 </template>
 
 <script lang="ts" setup>
-import { type SearchResult, scrapeLink } from '~/utils/scrape-link'
-
 const route = useRoute()
 const peer = usePeer()
 const youtubeRegex = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.be)\/.+$/
@@ -40,7 +38,7 @@ const youtubeRegex = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.be)\/.+$
 const url = ref<string>('')
 const searchLoading = ref<boolean>(false)
 
-const searchResult = ref<SearchResult>()
+const searchResult = ref<IframeResults>()
 const validUrl = computed(
    () => !!searchResult.value && !!searchResult.value.thumbnail && !!searchResult.value.title
 )
@@ -56,7 +54,7 @@ watch(url, async (curr) => {
 
 const debouncedUrl = useDebounceFn(async (url: string) => {
    try {
-      return await scrapeLink(url)
+      return await scrapeIframe(url)
    } catch (e) {
       return
    } finally {

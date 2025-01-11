@@ -1,7 +1,0 @@
-name: template-nuxt
-description: AWS stack for template-nuxt
-main: ./aws/index.ts
-runtime:
-   name: nodejs
-   options:
-      packagemanager: yarn
