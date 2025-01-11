@@ -11,7 +11,6 @@ export const scrapeLink = async (url: string) => {
       console.log(response)
 
       const html = await response.text()
-      console.log(html)
 
       const parser = new DOMParser()
       const doc = parser.parseFromString(html, 'text/html')
