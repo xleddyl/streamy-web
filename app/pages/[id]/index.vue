@@ -3,7 +3,7 @@
       <TextInput
          v-model="url"
          @submit="handleAddToQueue"
-         class="ml-auto w-full max-w-[40rem]"
+         class="ml-auto w-full max-w-none md:max-w-[40rem]"
          :placeholder="$t('screen.index.home.add_link_placeholder')"
          :buttonText="$t('common.add_queue')"
          :showSuggestion="!!url && !searchLoading"
