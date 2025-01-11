@@ -1,5 +1,5 @@
 <template>
-   <header class="__center mb-2 flex items-center justify-between py-5">
+   <header class="__center mb-2 flex justify-between py-5 md:items-center">
       <div class="flex gap-0 max-md:flex-col md:items-center md:gap-4">
          <NuxtLink class="__clickable" to="/">
             <Icon name="logotype" class="h-8 w-32" />
