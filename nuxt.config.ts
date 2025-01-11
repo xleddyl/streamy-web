@@ -108,10 +108,10 @@ export default defineNuxtConfig({
             defineModel: true,
          },
       },
-      esbuild: {
-         drop: ['debugger'],
-         pure: ['console.log', 'console.error', 'console.warn', 'console.debug', 'console.trace'],
-      },
+      // esbuild: {
+      //    drop: ['debugger'],
+      //    pure: ['console.log', 'console.error', 'console.warn', 'console.debug', 'console.trace'],
+      // },
       plugins: [svgLoader({ svgoConfig: { plugins: ['prefixIds'] } })],
    },
 

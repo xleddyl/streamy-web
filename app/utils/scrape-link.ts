@@ -5,7 +5,7 @@ export type SearchResult = {
 
 export const scrapeLink = async (url: string) => {
    const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`
-   console.log(proxyUrl)
+
    try {
       const response = await fetch(proxyUrl)
       console.log(response)
