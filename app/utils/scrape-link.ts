@@ -11,12 +11,14 @@ export const scrapeLink = async (url: string) => {
       console.log(response)
 
       const html = await response.text()
+      console.log(html)
 
       const parser = new DOMParser()
       const doc = parser.parseFromString(html, 'text/html')
 
       const title = doc.querySelector('meta[name="title"]')?.getAttribute('content') || ''
       const thumbnail = doc.querySelector('link[rel="image_src"]')?.getAttribute('href') || ''
+      console.log(title, thumbnail)
 
       return {
          title,
