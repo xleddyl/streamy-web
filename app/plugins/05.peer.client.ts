@@ -1,6 +1,5 @@
-import { PeeringAttachment } from '@pulumi/aws/ec2transitgateway'
-import { Peer } from 'peerjs'
 import type { DataConnection } from 'peerjs'
+import { Peer } from 'peerjs'
 
 type ConnectionMap = Map<string, DataConnection>
 type Commands = 'seek' | 'play' | 'pause' | 'video' | 'rate' | 'add' | 'next' | 'prev'

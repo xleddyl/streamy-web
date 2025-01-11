@@ -27,7 +27,10 @@ const runtimeConfig = useRuntimeConfig()
 const message = computed(() => {
    switch (props.error?.statusCode) {
       case 404: {
-         return { error: t('common_error.404'), details: t('common_error.404_description') }
+         return {
+            error: t('common_error.404'),
+            details: t('common_error.404_description'),
+         }
       }
       case 500: {
          if (runtimeConfig.public.mode === 'development') {

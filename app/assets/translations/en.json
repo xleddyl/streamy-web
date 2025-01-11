@@ -16,7 +16,8 @@
       "404": "Verify the room code",
       "404_description": "Check that you have entered the correct room code in the URL",
       "500": "Internal server error",
-      "410": "The link has expired or is invalid"
+      "410": "The link has expired or is invalid",
+      "video_not_found": "Video not found"
    },
    "api_error": {
       "generic": "An error occurred"

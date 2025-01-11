@@ -1,6 +1,6 @@
 <template>
    <div class="flex w-full flex-col gap-3">
-      <div class="h-[30rem] select-none overflow-hidden rounded-3xl md:h-[40rem]">
+      <div class="aspect-[16/9] h-fit max-h-[40rem] select-none overflow-hidden rounded-2xl">
          <div class="relative size-full">
             <div v-if="!currentVideoId" class="absolute inset-0 z-10 bg-charleston-green" />
             <div class="size-full" id="player" />
