@@ -4,7 +4,7 @@ export type SearchResult = {
 }
 
 export const scrapeLink = async (url: string) => {
-   const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`
+   const proxyUrl = `https://streamy.xleddyl.dev/api/proxy?url=${encodeURIComponent(url)}`
 
    try {
       const response = await fetch(proxyUrl)
