@@ -68,7 +68,8 @@ const handleDeleteSearch = () => {
 }
 
 const handleAddToQueue = () => {
-   if (!(url.value && youtubeRegex.test(url.value)) || !validUrl.value) return
+   // if (!(url.value && youtubeRegex.test(url.value)) || !validUrl.value) return
+   if (!(url.value && youtubeRegex.test(url.value))) return
    peer.sendMessage({
       type: 'queue',
       command: {
